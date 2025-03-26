@@ -1,0 +1,23 @@
+@startuml
+    abstract class Card{
+        
+    }
+    class UnitCard{
+    
+    }
+    abstract SpellCard{
+        
+    }
+    class PointSpellCard{
+        
+    }
+    class GlobalSpellCard{
+        
+    }
+    
+    Card <|-- SpellCard
+    Card <|-- UnitCard
+    SpellCard <|-- GlobalSpellCard
+    SpellCard <|-- PointSpellCard
+    
+@enduml
