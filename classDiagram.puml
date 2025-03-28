@@ -15,6 +15,48 @@
         
     }
     
+    abstract class Damage{
+        
+    }
+    class PhysicalDamage{
+        
+    }
+    abstract class ElementalDamage{
+        
+    }
+    class FireDamage{
+        
+    }
+    class IceDamage{
+        
+    }
+    class ElectricalDamage{
+        
+    }
+    
+    class DarkDamage{
+        
+    }
+    class HolyDamage{
+        
+    }
+    
+    abstract class StatusEffect{
+    
+    }
+    
+    abstract class Unit{
+    
+    }
+    
+    Damage <|-- ElementalDamage
+    Damage <|-- DarkDamage
+    Damage <|-- HolyDamage
+    Damage <|-- PhysicalDamage
+    ElementalDamage <|-- FireDamage
+    ElementalDamage <|-- IceDamage
+    ElementalDamage <|-- ElectricalDamage
+    
     Card <|-- SpellCard
     Card <|-- UnitCard
     SpellCard <|-- GlobalSpellCard
