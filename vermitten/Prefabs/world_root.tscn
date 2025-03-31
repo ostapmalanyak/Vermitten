@@ -1,3 +1,7 @@
-[gd_scene format=3 uid="uid://c38fy5he8pdl6"]
+[gd_scene load_steps=2 format=3 uid="uid://c38fy5he8pdl6"]
+
+[ext_resource type="PackedScene" uid="uid://fpbe8gfrui50" path="res://Prefabs/card.tscn" id="1_282ej"]
 
 [node name="WorldRoot" type="Node3D"]
+
+[node name="Card" parent="." instance=ExtResource("1_282ej")]
