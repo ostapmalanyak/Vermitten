@@ -11,8 +11,9 @@ size = Vector3(34, 46, 1)
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, 0)
 mesh = ExtResource("1_dm2v0")
 
-[node name="Area3D" type="Area3D" parent="."]
+[node name="CardCollider" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+collision_mask = 16
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+[node name="CardCollision" type="CollisionShape3D" parent="CardCollider"]
 shape = SubResource("BoxShape3D_xckrm")
