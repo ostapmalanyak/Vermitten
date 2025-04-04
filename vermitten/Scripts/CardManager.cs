@@ -22,7 +22,7 @@ public partial class CardManager : Node3D
 	public override void _Input(InputEvent @event) {
 		if (@event.IsActionPressed(LeftClickPress)) {
 			GD.Print("click");
-			Node3D? card = RaycastForCards();
+			Node3D? card = MouseHovering();
 			if (card is not null) {
 				GD.Print($"card clicked - {card.Name}");
 			}
@@ -32,29 +32,16 @@ public partial class CardManager : Node3D
 		}
 	}
 
-	private Node3D? RaycastForCards() {
-		PhysicsDirectSpaceState3D spaceState = GetWorld3D().DirectSpaceState;
-
-		var rayParameters = new PhysicsRayQueryParameters3D();
-		Camera3D globalCamera = GetViewport().GetCamera3D();
-		
-		rayParameters.From = globalCamera.ProjectRayOrigin(GetViewport().GetMousePosition());
-		rayParameters.To = rayParameters.From + globalCamera.ProjectRayNormal(GetViewport().GetMousePosition()) * 1000f;
-		
-		rayParameters.CollideWithAreas = true;
-		rayParameters.CollisionMask = CardCollisionMask; // COLLISION MASK RESERVED FOR CARDS CHECK BEFORE USING!!!!!!!
-		
-		var result = spaceState.IntersectRay(rayParameters);
-		
-		if (result.Count != 0) {
-			Node3D collider = (Node3D) result["collider"];
-			Node3D? cardFound = collider.GetParent<Node3D>();
-			if (cardFound is null) {
-				throw new Exception(
-					$"Card area mask layer ({CardCollisionMask}) used without a card parent at {this}");
+	private Card? MouseHovering() {
+		var array = GetChildren();
+		foreach (var node in array) {
+			if (node is not Card card) {
+				throw new Exception($"Card Manager contains non-cards({node.Name} - {node})");
 			}
 
-			return cardFound;
+			if (card.MouseHovering) {
+				return card;
+			}
 		}
 
 		return null;
