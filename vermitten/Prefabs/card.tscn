@@ -10,7 +10,7 @@ size = Vector3(34, 46, 1)
 script = ExtResource("1_amuhj")
 
 [node name="CardMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.5, 0)
+transform = Transform3D(-1, 8.74228e-08, -3.82137e-15, 0, -4.37114e-08, -1, -8.74228e-08, -1, 4.37114e-08, 0, 0.5, 0)
 mesh = ExtResource("1_dm2v0")
 
 [node name="CardCollider" type="Area3D" parent="."]
