@@ -11,7 +11,7 @@ public partial class Card : Node3D
 	private const float SelectSeconds = 0.05f;
 	
 	public bool MouseHovering = false;
-	private int _selectingState = 0; // 0 - neutral, 1 - moving up, 2 - moving back
+	private SelectingState _selectingState = 0; // 0 - neutral, 1 - moving up, 2 - moving back
 	private float _selectingTimeSpent = 0;
 	private float _rotated = 0;
 	private float _mult = -1;
@@ -30,7 +30,7 @@ public partial class Card : Node3D
 	{
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
 		
-		if (_selectingState == 1) {
+		if (_selectingState == (SelectingState)1) {
 			if (_selectingTimeSpent<SelectSeconds) { // while we haven't moved forward enough
 				_selectingTimeSpent+=(float)delta; 
 				// add the time since last frame to total time spent
@@ -58,7 +58,7 @@ public partial class Card : Node3D
 				// put it into neutral
 			}
 		}
-		else if (_selectingState == 2) { // this has the same logic just reversed
+		else if (_selectingState == (SelectingState)2) { // this has the same logic just reversed
 			if (_selectingTimeSpent>0) {
 				_selectingTimeSpent-=(float)delta;
 				
@@ -81,12 +81,12 @@ public partial class Card : Node3D
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
 		MouseHovering = true;
 		_prevPos = _cardMesh.Position;
-		_selectingState = 1; // move card mesh forward
+		_selectingState = (SelectingState)1; // move card mesh forward
 	}
 
 	private void StopShaking() { // this is connected to the mouse_exited action in the CardCollider node of the card scene
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
 		MouseHovering = false;
-		_selectingState = 2; // move card mash back
+		_selectingState = (SelectingState)2; // move card mash back
 	}
 }
