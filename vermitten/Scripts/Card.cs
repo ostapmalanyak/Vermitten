@@ -1,5 +1,6 @@
 #nullable enable
 using System;
+using System.Threading;
 using Godot;
 
 namespace Vermitten.Scripts;
@@ -10,13 +11,16 @@ public partial class Card : Node3D
 	private const float SelectMove = 5f;
 	private const float SelectSeconds = 0.05f;
 	
-	public bool MouseHovering = false;
+	public bool DoDrag = false;
 	private SelectingState _selectingState = 0; // 0 - neutral, 1 - moving up, 2 - moving back
 	private float _selectingTimeSpent = 0;
 	private float _rotated = 0;
 	private float _mult = -1;
 	private Vector3 _prevPos;
 	private MeshInstance3D? _cardMesh;
+	private float mousePosition = 0;
+	
+	
 	
 	public override void _Ready() {
 		_cardMesh = GetChild<MeshInstance3D>(0); 
@@ -79,14 +83,26 @@ public partial class Card : Node3D
 
 	private void StartShake() { // this is connected to the mouse_entered action in the CardCollider node of the card scene
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
-		MouseHovering = true;
+		DoDrag = true;
 		_prevPos = _cardMesh.Position;
 		_selectingState = (SelectingState)1; // move card mesh forward
 	}
 
 	private void StopShaking() { // this is connected to the mouse_exited action in the CardCollider node of the card scene
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
-		MouseHovering = false;
+		DoDrag = false;
 		_selectingState = (SelectingState)2; // move card mash back
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		var intersect = get_mouse_intersect(@event);
+	}
+
+	public override void get_mouse_intersect()
+	{
+		var currentCamera = get_viewport.get_camera_3d();
+		var params = new PhysicsRayQueryParameters3D();
+		params.from   = currentCamera; 
 	}
 }

@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://c38fy5he8pdl6"]
+[gd_scene load_steps=4 format=3 uid="uid://c38fy5he8pdl6"]
 
 [ext_resource type="PackedScene" uid="uid://fpbe8gfrui50" path="res://Prefabs/card.tscn" id="1_282ej"]
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
+[ext_resource type="Script" path="res://Scripts/Menu.cs" id="3_oc5u5"]
 
 [node name="WorldRoot" type="Node3D"]
 
@@ -12,33 +13,37 @@ script = ExtResource("1_itx87")
 transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 15.723, 0, 0)
 
 [node name="Card2" parent="CardManager" instance=ExtResource("1_282ej")]
-transform = Transform3D(0.990822, -0.00172931, 0.135162, 0.00174533, 0.999998, 2.81121e-11, -0.135162, 0.000235902, 0.990824, -22.5607, 0, 0)
+transform = Transform3D(0.990822, -0.00172931, 0.135162, 0.00174533, 0.999998, 2.81121e-11, -0.135162, 0.000235902, 0.990824, -22.5607, 3.73752, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.355303, 0.934751, 0, -0.934751, 0.355303, 0, 59.0768, 22.8447)
 current = true
 
-[node name="Control" type="Control" parent="."]
+[node name="Menu" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("3_oc5u5")
 
-[node name="MarginContainer" type="MarginContainer" parent="Control"]
+[node name="MarginContainer" type="MarginContainer" parent="Menu"]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="Menu/MarginContainer"]
 layout_mode = 2
 
-[node name="Play" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+[node name="Play" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "Play
+"
 
-[node name="Options" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+[node name="Options" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
 layout_mode = 2
+text = "Options"
 
-[node name="Quit" type="Button" parent="Control/MarginContainer/VBoxContainer"]
+[node name="Quit" type="Button" parent="Menu/MarginContainer/VBoxContainer"]
 layout_mode = 2
 text = "Exit
 "
