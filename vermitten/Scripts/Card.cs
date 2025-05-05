@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using Godot;
+using Godot.Collections;
 
 namespace Vermitten.Scripts;
 
@@ -18,7 +19,7 @@ public partial class Card : Node3D
 	private float _mult = -1;
 	private Vector3 _prevPos;
 	private MeshInstance3D? _cardMesh;
-	private float mousePosition = 0;
+	private Vector2 MousePosition;
 	
 	
 	
@@ -95,14 +96,24 @@ public partial class Card : Node3D
 	}
 
 	public override void _Input(InputEvent @event)
-	{
-		var intersect = get_mouse_intersect(@event);
+	{ 
+		Dictionary intersect = GetMouseIntersect(MousePosition);
+
+		if (@event is InputEventMouse)
+		{
+			if()
+		}
 	}
 
-	public override void get_mouse_intersect()
+	public Dictionary GetMouseIntersect(Vector2 mousePosition)
 	{
-		var currentCamera = get_viewport.get_camera_3d();
-		var params = new PhysicsRayQueryParameters3D();
-		params.from   = currentCamera; 
+		var currentCamera = GetViewport().GetCamera3D();
+		var param = new PhysicsRayQueryParameters3D();
+		param.From = currentCamera.ProjectRayOrigin(mousePosition); 
+		param.To = currentCamera.ProjectPosition(mousePosition,1000);
+		PhysicsDirectSpaceState3D worldSpace = GetWorld3D().DirectSpaceState;
+		var result = worldSpace.IntersectRay(param);
+		return result;
+
 	}
 }
