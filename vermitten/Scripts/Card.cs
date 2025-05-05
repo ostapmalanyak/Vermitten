@@ -12,7 +12,7 @@ public partial class Card : Node3D
 	private const float SelectMove = 5f;
 	private const float SelectSeconds = 0.05f;
 	
-	public bool DoDrag = false;
+	public bool MouseHovering = false;
 	private SelectingState _selectingState = 0; // 0 - neutral, 1 - moving up, 2 - moving back
 	private float _selectingTimeSpent = 0;
 	private float _rotated = 0;
@@ -84,14 +84,14 @@ public partial class Card : Node3D
 
 	private void StartShake() { // this is connected to the mouse_entered action in the CardCollider node of the card scene
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
-		DoDrag = true;
+		MouseHovering = true;
 		_prevPos = _cardMesh.Position;
 		_selectingState = (SelectingState)1; // move card mesh forward
 	}
 
 	private void StopShaking() { // this is connected to the mouse_exited action in the CardCollider node of the card scene
 		if (_cardMesh is null) throw new Exception($"No card mesh at {this}");
-		DoDrag = false;
+		MouseHovering = false;
 		_selectingState = (SelectingState)2; // move card mash back
 	}
 	
