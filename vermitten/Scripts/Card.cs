@@ -94,26 +94,7 @@ public partial class Card : Node3D
 		DoDrag = false;
 		_selectingState = (SelectingState)2; // move card mash back
 	}
-
-	public override void _Input(InputEvent @event)
-	{ 
-		Dictionary intersect = GetMouseIntersect(MousePosition);
-
-		if (@event is InputEventMouse)
-		{
-			if()
-		}
-	}
-
-	public Dictionary GetMouseIntersect(Vector2 mousePosition)
-	{
-		var currentCamera = GetViewport().GetCamera3D();
-		var param = new PhysicsRayQueryParameters3D();
-		param.From = currentCamera.ProjectRayOrigin(mousePosition); 
-		param.To = currentCamera.ProjectPosition(mousePosition,1000);
-		PhysicsDirectSpaceState3D worldSpace = GetWorld3D().DirectSpaceState;
-		var result = worldSpace.IntersectRay(param);
-		return result;
-
-	}
+	
 }
+
+	
