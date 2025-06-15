@@ -1,24 +1,24 @@
-[gd_scene load_steps=4 format=3 uid="uid://fpbe8gfrui50"]
+[gd_scene load_steps=4 format=3 uid="uid://be0crgd1enuac"]
 
 [ext_resource type="Script" path="res://Scripts/Card.cs" id="1_amuhj"]
-[ext_resource type="ArrayMesh" uid="uid://dqgm02p31sunp" path="res://Assets/3dModels/UnitCardMesh.tres" id="1_dm2v0"]
+[ext_resource type="Texture2D" uid="uid://bf5lfdti6lfdn" path="res://Assets/CardArt/CardPlaceholder.png" id="1_ysxfo"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_xckrm"]
-size = Vector3(34, 46, 1)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_gc1jh"]
+size = Vector2(750, 1050)
 
-[node name="Card" type="Node3D"]
+[node name="Card" type="Node2D"]
+position = Vector2(531, 381)
+scale = Vector2(0.25, 0.25)
 script = ExtResource("1_amuhj")
 
-[node name="CardMesh" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1, 8.74228e-08, -3.82137e-15, 0, -4.37114e-08, -1, -8.74228e-08, -1, 4.37114e-08, 0, 0.5, 0)
-mesh = ExtResource("1_dm2v0")
+[node name="Sprite" type="Sprite2D" parent="."]
+position = Vector2(0, 1.90735e-06)
+texture = ExtResource("1_ysxfo")
 
-[node name="CardCollider" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
-collision_mask = 16
+[node name="CardArea" type="Area2D" parent="."]
 
-[node name="CardCollision" type="CollisionShape3D" parent="CardCollider"]
-shape = SubResource("BoxShape3D_xckrm")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="CardArea"]
+shape = SubResource("RectangleShape2D_gc1jh")
 
-[connection signal="mouse_entered" from="CardCollider" to="." method="StartShake"]
-[connection signal="mouse_exited" from="CardCollider" to="." method="StopShaking"]
+[connection signal="mouse_entered" from="CardArea" to="." method="MouseEntered"]
+[connection signal="mouse_exited" from="CardArea" to="." method="MouseExited"]

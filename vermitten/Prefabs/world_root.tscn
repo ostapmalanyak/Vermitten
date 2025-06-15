@@ -1,19 +1,34 @@
-[gd_scene load_steps=3 format=3 uid="uid://c38fy5he8pdl6"]
+[gd_scene load_steps=5 format=3 uid="uid://c38fy5he8pdl6"]
 
-[ext_resource type="PackedScene" uid="uid://fpbe8gfrui50" path="res://Prefabs/card.tscn" id="1_282ej"]
+[ext_resource type="PackedScene" uid="uid://be0crgd1enuac" path="res://Prefabs/card.tscn" id="1_282ej"]
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
+[ext_resource type="Material" uid="uid://0ivmrosr7opl" path="res://Assets/Materials/TempMaterial.tres" id="3_nl6fw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_gs0qv"]
 
 [node name="WorldRoot" type="Node3D"]
 
 [node name="CardManager" type="Node3D" parent="."]
-script = ExtResource("1_itx87")
-
-[node name="Card1" parent="CardManager" instance=ExtResource("1_282ej")]
-transform = Transform3D(0.965926, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.965926, 15.723, 0, 0)
-
-[node name="Card2" parent="CardManager" instance=ExtResource("1_282ej")]
-transform = Transform3D(0.965924, -0.00168586, 0.258819, 0.00174533, 0.999998, 0, -0.258819, 0.000451724, 0.965926, -22.5607, 0, 0)
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.355303, 0.934751, 0, -0.934751, 0.355303, 0, 59.0768, 22.8447)
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 100, 0)
 current = true
+
+[node name="Node3D" type="Node3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+transform = Transform3D(1000, 0, 0, 0, 1, 0, 0, 0, 1000, 0, -7.38241, 0)
+material_override = ExtResource("3_nl6fw")
+mesh = SubResource("BoxMesh_gs0qv")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.725002, 0.688747, 0, -0.688747, 0.725002, 0, 0, 0)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CardManager" type="Node2D" parent="CanvasLayer"]
+script = ExtResource("1_itx87")
+
+[node name="Card" parent="CanvasLayer/CardManager" instance=ExtResource("1_282ej")]
+
+[node name="Card2" parent="CanvasLayer/CardManager" instance=ExtResource("1_282ej")]
