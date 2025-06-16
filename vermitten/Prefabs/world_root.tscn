@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=3 uid="uid://c38fy5he8pdl6"]
 
-[ext_resource type="PackedScene" uid="uid://be0crgd1enuac" path="res://Prefabs/card.tscn" id="1_282ej"]
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
+[ext_resource type="Script" path="res://Scripts/Hand.cs" id="3_curdn"]
 [ext_resource type="Material" uid="uid://0ivmrosr7opl" path="res://Assets/Materials/TempMaterial.tres" id="3_nl6fw"]
 [ext_resource type="ArrayMesh" uid="uid://bf2prnxqeotfx" path="res://Assets/3dModels/Mitten.tres" id="4_wgnob"]
 
@@ -30,11 +30,9 @@ transform = Transform3D(1, 0, 0, 0, 0.725002, 0.688747, 0, -0.688747, 0.725002, 
 [node name="CardManager" type="Node2D" parent="CanvasLayer"]
 script = ExtResource("1_itx87")
 
-[node name="Card" parent="CanvasLayer/CardManager" instance=ExtResource("1_282ej")]
-position = Vector2(485, 385)
-
-[node name="Card2" parent="CanvasLayer/CardManager" instance=ExtResource("1_282ej")]
-position = Vector2(730, 383)
+[node name="Hand" type="Node2D" parent="CanvasLayer"]
+script = ExtResource("3_curdn")
+_handCount = 3
 
 [node name="Gauntlet" type="Node3D" parent="."]
 

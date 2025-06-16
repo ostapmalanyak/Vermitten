@@ -17,7 +17,9 @@ public partial class Card : Node2D
 	public bool MouseHovering { get; private set; } // Only card should change when it's getting hovered over
 	
 	public Area2D CardArea { get; private set; } = null!; // cannot be null
-
+	
+	public Vector2 HandPos { get; set; }
+	
 	private CardManager? _cardManager;
 	
 	public override void _Ready() {

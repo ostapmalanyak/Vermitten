@@ -58,6 +58,7 @@ public partial class CardManager : Node2D
 		if (_cardDragged is null) {
 			return;
 		}
+		Hand.AnimateCardToPos(_cardDragged, _cardDragged.HandPos, GetTree());
 		HighlightCard(_cardDragged, true);
 		_cardDragged = null;
 	}
