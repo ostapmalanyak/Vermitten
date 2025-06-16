@@ -1,6 +1,7 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Godot;
 
 namespace Vermitten.Scripts;
@@ -13,6 +14,7 @@ public partial class CardManager : Node2D
 	private Card? _cardHovering;
 	private Vector2 _screenSize;
 	private readonly List<Card> _hoverQueue = new List<Card>();
+	private Hand _hand = null!;
 	
 	[Export]
 	private Vector2 _normalCardSize = new Vector2(0.25f, 0.25f);
@@ -20,6 +22,8 @@ public partial class CardManager : Node2D
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 		_screenSize = GetViewport().GetVisibleRect().Size;
+		_hand = GetNode<Hand>(new NodePath("../Hand")) ??
+		                      throw new FileNotFoundException("Invalid hand path");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -51,6 +55,7 @@ public partial class CardManager : Node2D
 
 	private void StartDrag(Card card) {
 		_cardDragged = card;
+		_hand.RemoveCardFromHand(card);
 		HighlightCard(card, false, false);
 	}
 	
@@ -58,6 +63,11 @@ public partial class CardManager : Node2D
 		if (_cardDragged is null) {
 			return;
 		}
+
+		if (!_hand.HandCards.Contains(_cardDragged)) {
+			_hand.AddCardToHand(_cardDragged);
+		}
+		
 		Hand.AnimateCardToPos(_cardDragged, _cardDragged.HandPos, GetTree());
 		HighlightCard(_cardDragged, true);
 		_cardDragged = null;

@@ -13,7 +13,9 @@ public partial class Hand : Node2D
 	
 	private const float HandYPos = 300;
 	private const int CardWidth = 200;
-	private readonly List<Card> _hand = new List<Card>();
+	
+	public List<Card> HandCards { get; } = new List<Card>();
+	
 	private const string CardPrefabPath = "res://Prefabs/card.tscn";
 	
 	private float _centerScreen;
@@ -38,18 +40,23 @@ public partial class Hand : Node2D
 		
 	}
 
-	private void AddCardToHand(Card card) {
-		_hand.Add(card);
+	public void AddCardToHand(Card card) {
+		HandCards.Add(card);
 		UpdateHandPosition();
 	}
 
-	private void UpdateHandPosition() {
-		for (int i = 0; i < _hand.Count; i++) {
-			var newPos = new Vector2(CalculatePos(i), HandYPos);
-			_hand[i].HandPos = newPos;
-			AnimateCardToPos(_hand[i], newPos, GetTree());
-		}
+	public void RemoveCardFromHand(Card card) {
+		HandCards.Remove(card);
+		UpdateHandPosition();
 	}
+
+	private void UpdateHandPosition() { // TODO: add a handPriority thing to card so that it snaps back to right place
+		for (int i = 0; i < HandCards.Count; i++) {
+			var newPos = new Vector2(CalculatePos(i), HandYPos);
+			HandCards[i].HandPos = newPos;
+			AnimateCardToPos(HandCards[i], newPos, GetTree());
+		}
+	} 
 
 	public static void AnimateCardToPos(Card card, Vector2 newPos, SceneTree tree) {
 		var tween = tree.CreateTween();
@@ -57,7 +64,7 @@ public partial class Hand : Node2D
 	}
 
 	private float CalculatePos(int index) {
-		float xOffset = (_hand.Count - 1) * CardWidth;
+		float xOffset = (HandCards.Count - 1) * CardWidth;
 		var xPosition = _centerScreen + index * CardWidth - xOffset/2f;
 
 		return xPosition;
