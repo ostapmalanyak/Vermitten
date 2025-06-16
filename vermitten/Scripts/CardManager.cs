@@ -1,6 +1,6 @@
 #nullable enable
 using System;
-using System.IO;
+using System.Collections.Generic;
 using Godot;
 
 namespace Vermitten.Scripts;
@@ -8,10 +8,11 @@ namespace Vermitten.Scripts;
 public partial class CardManager : Node2D
 {
 	private const string LeftClickPress = "LeftClick";
-	private const int CardCollisionMask = 5; // unused for now
+	//private const int CardCollisionMask = 5; //unused for now
 	private Card? _cardDragged;
 	private Card? _cardHovering;
 	private Vector2 _screenSize;
+	private readonly List<Card> _hoverQueue = new List<Card>();
 	
 	[Export]
 	private Vector2 _normalCardSize = new Vector2(0.25f, 0.25f);
@@ -39,19 +40,35 @@ public partial class CardManager : Node2D
 			
 			if (card is not null) {
 				GD.Print($"card clicked - {card.Name}");
-				_cardDragged = card;
+				StartDrag(card);
 			}
 		}
 		if (@event.IsActionReleased(LeftClickPress)) {
 			//GD.Print("click release");
-			_cardDragged = null;
+			EndDrag();
 		}
+	}
+
+	private void StartDrag(Card card) {
+		_cardDragged = card;
+		HighlightCard(card, false, false);
+	}
+	
+	private void EndDrag() {
+		if (_cardDragged is null) {
+			return;
+		}
+		HighlightCard(_cardDragged, true);
+		_cardDragged = null;
 	}
 
 	private Card? MouseHovering() {
 		var children = GetChildren();
+		Card? maxCard = null;
+		int maxZ = -1;
+		
 		foreach (var child in children) {
-			// go through every child in the card manager to check which one the mouse is hovering over
+			// go through every child in the card manager to check which one the mouse is hovering over has the highest z index
 			
 			if (child is not Card card) {
 				// CardManager should only contain cards as children
@@ -59,12 +76,14 @@ public partial class CardManager : Node2D
 			}
 
 			if (card.MouseHovering) {
-				return card;
+				if (maxZ < card.ZIndex) {
+					maxZ = card.ZIndex;
+					maxCard = card;
+				}
 			}
 		}
 
-		return null;
-		// if no card is hovered over return null;
+		return maxCard;
 	}
 
 	public void ConnectCard(Card card) {
@@ -76,30 +95,35 @@ public partial class CardManager : Node2D
 		cardArea.MouseExited += () => UnHover(card);
 	}
 
-	public void Hover(Card card) {
-		if (_cardHovering is null) {
-			_cardHovering = card;
-			HighlightCard(card, true); // Actually make raycast instead of action based!!
-			GD.Print("hover");
+	private void Hover(Card card) {
+		_hoverQueue.Add(card); // add it to the hover queue
+		
+		if(_cardDragged!=_hoverQueue[0]) {
+			HighlightCard(_hoverQueue[0], true); // highlight the top card
 		}
+		
+		GD.Print("hover");
 	}
 
-	public void UnHover(Card card) {
-		if (_cardHovering == card) {
-			_cardHovering = null;
-			HighlightCard(card, false);
-			GD.Print("unhover");
+	private void UnHover(Card card) {
+		HighlightCard(card, false); // unhighlight the card from whose area mouse exited
+		_hoverQueue.Remove(card); // remove from queue
+		
+		if(_hoverQueue.Count!=0 && _cardDragged!=_hoverQueue[0]) {
+			HighlightCard(_hoverQueue[0], true); // hover the new top card
 		}
+		
+		GD.Print("unhover");
 	}
 
-	public void HighlightCard(Card card, bool hovered) {
+	private void HighlightCard(Card card, bool hovered, bool zChange = true) {
 		if (hovered) {
 			card.Scale = _normalCardSize*1.05f;
-			card.ZIndex = 2;
+			if(zChange) card.ZIndex = 2;
 		}
 		else {
 			card.Scale = _normalCardSize;
-			card.ZIndex = 1;
+			if(zChange) card.ZIndex = 1;
 		}
 	}
 }

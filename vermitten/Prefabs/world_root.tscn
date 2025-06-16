@@ -1,8 +1,9 @@
-[gd_scene load_steps=5 format=3 uid="uid://c38fy5he8pdl6"]
+[gd_scene load_steps=6 format=3 uid="uid://c38fy5he8pdl6"]
 
 [ext_resource type="PackedScene" uid="uid://be0crgd1enuac" path="res://Prefabs/card.tscn" id="1_282ej"]
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
 [ext_resource type="Material" uid="uid://0ivmrosr7opl" path="res://Assets/Materials/TempMaterial.tres" id="3_nl6fw"]
+[ext_resource type="ArrayMesh" uid="uid://bf2prnxqeotfx" path="res://Assets/3dModels/Mitten.tres" id="4_wgnob"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gs0qv"]
 
@@ -11,12 +12,12 @@
 [node name="CardManager" type="Node3D" parent="."]
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 100, 0)
+transform = Transform3D(1, 0, 0, 0, 0.233191, 0.972431, 0, -0.972431, 0.233191, 0, 100, 30.9151)
 current = true
 
-[node name="Node3D" type="Node3D" parent="."]
+[node name="Ground" type="Node3D" parent="."]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Node3D"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground"]
 transform = Transform3D(1000, 0, 0, 0, 1, 0, 0, 0, 1000, 0, -7.38241, 0)
 material_override = ExtResource("3_nl6fw")
 mesh = SubResource("BoxMesh_gs0qv")
@@ -30,5 +31,19 @@ transform = Transform3D(1, 0, 0, 0, 0.725002, 0.688747, 0, -0.688747, 0.725002, 
 script = ExtResource("1_itx87")
 
 [node name="Card" parent="CanvasLayer/CardManager" instance=ExtResource("1_282ej")]
+position = Vector2(485, 385)
 
 [node name="Card2" parent="CanvasLayer/CardManager" instance=ExtResource("1_282ej")]
+position = Vector2(730, 383)
+
+[node name="Gauntlet" type="Node3D" parent="."]
+
+[node name="GauntletMesh" type="MeshInstance3D" parent="Gauntlet"]
+transform = Transform3D(-8.74228e-08, 2, 0, 8.74228e-08, 3.82137e-15, 2, 2, 8.74228e-08, -8.74228e-08, 100, 0, 0)
+mesh = ExtResource("4_wgnob")
+
+[node name="Gauntlet2" type="Node3D" parent="."]
+
+[node name="GauntletMesh" type="MeshInstance3D" parent="Gauntlet2"]
+transform = Transform3D(1.50996e-07, -2, -8.74228e-08, 0, -8.74228e-08, 2, -2, -1.50996e-07, -6.60024e-15, -100, 0, 0)
+mesh = ExtResource("4_wgnob")
