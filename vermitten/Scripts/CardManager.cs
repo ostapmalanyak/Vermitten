@@ -43,7 +43,7 @@ public partial class CardManager : Node2D
 			//find which card is being hovered over if any
 			
 			if (card is not null) {
-				GD.Print($"card clicked - {card.Name}");
+				GD.Print($"card clicked - {card.Name} with hand priority {card.HandPriority}");
 				StartDrag(card);
 			}
 		}
@@ -112,8 +112,6 @@ public partial class CardManager : Node2D
 		if(_cardDragged!=_hoverQueue[0]) {
 			HighlightCard(_hoverQueue[0], true); // highlight the top card
 		}
-		
-		GD.Print("hover");
 	}
 
 	private void UnHover(Card card) {
@@ -123,8 +121,6 @@ public partial class CardManager : Node2D
 		if(_hoverQueue.Count!=0 && _cardDragged!=_hoverQueue[0]) {
 			HighlightCard(_hoverQueue[0], true); // hover the new top card
 		}
-		
-		GD.Print("unhover");
 	}
 
 	private void HighlightCard(Card card, bool hovered, bool zChange = true) {

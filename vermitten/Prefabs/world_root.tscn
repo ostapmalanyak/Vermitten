@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
 [ext_resource type="Script" path="res://Scripts/Hand.cs" id="3_curdn"]
 [ext_resource type="Material" uid="uid://0ivmrosr7opl" path="res://Assets/Materials/TempMaterial.tres" id="3_nl6fw"]
-[ext_resource type="ArrayMesh" uid="uid://bf2prnxqeotfx" path="res://Assets/3dModels/Mitten.tres" id="4_wgnob"]
+[ext_resource type="PackedScene" uid="uid://qm13yhk25vfk" path="res://Assets/3dModels/Mitten.glb" id="4_7xguy"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gs0qv"]
 
@@ -36,12 +36,10 @@ _handCount = 3
 
 [node name="Gauntlet" type="Node3D" parent="."]
 
-[node name="GauntletMesh" type="MeshInstance3D" parent="Gauntlet"]
-transform = Transform3D(-8.74228e-08, 2, 0, 8.74228e-08, 3.82137e-15, 2, 2, 8.74228e-08, -8.74228e-08, 100, 0, 0)
-mesh = ExtResource("4_wgnob")
+[node name="GauntletModel" parent="Gauntlet" instance=ExtResource("4_7xguy")]
+transform = Transform3D(-8.74228e-08, 0, 2, 0, 2, 0, -2, 0, -8.74228e-08, -100, 0, 0)
 
 [node name="Gauntlet2" type="Node3D" parent="."]
 
-[node name="GauntletMesh" type="MeshInstance3D" parent="Gauntlet2"]
-transform = Transform3D(1.50996e-07, -2, -8.74228e-08, 0, -8.74228e-08, 2, -2, -1.50996e-07, -6.60024e-15, -100, 0, 0)
-mesh = ExtResource("4_wgnob")
+[node name="GauntletModel" parent="Gauntlet2" instance=ExtResource("4_7xguy")]
+transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, 100, 0, 0)

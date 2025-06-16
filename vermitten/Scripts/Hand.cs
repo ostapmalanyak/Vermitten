@@ -12,7 +12,7 @@ public partial class Hand : Node2D
 	private int _handCount = 5;
 	
 	private const float HandYPos = 300;
-	private const int CardWidth = 200;
+	private const int CardWidth = 150;
 	
 	public List<Card> HandCards { get; } = new List<Card>();
 	
@@ -34,14 +34,24 @@ public partial class Hand : Node2D
 			Card card = newCard.Instantiate<Card>() ??
 			            throw new InvalidCastException("Loaded prefab was not a card");
 			card.Name = "Card";
+			card.HandPriority = i;
+			
 			manager.AddChild(card);
 			AddCardToHand(card);
 		}
 		
 	}
 
+	private void NormalizePriorities() {
+		int i = 0;
+		foreach (var card in HandCards) {
+			card.HandPriority = i++;
+		}
+	}
+
 	public void AddCardToHand(Card card) {
 		HandCards.Add(card);
+		HandCards.Sort((card1, card2) => card1.HandPriority>=card2.HandPriority ? 1 : 0);
 		UpdateHandPosition();
 	}
 
@@ -50,7 +60,8 @@ public partial class Hand : Node2D
 		UpdateHandPosition();
 	}
 
-	private void UpdateHandPosition() { // TODO: add a handPriority thing to card so that it snaps back to right place
+	private void UpdateHandPosition() {
+		NormalizePriorities();
 		for (int i = 0; i < HandCards.Count; i++) {
 			var newPos = new Vector2(CalculatePos(i), HandYPos);
 			HandCards[i].HandPos = newPos;

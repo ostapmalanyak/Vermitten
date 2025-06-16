@@ -18,6 +18,8 @@ public partial class Card : Node2D
 	
 	public Area2D CardArea { get; private set; } = null!; // cannot be null
 	
+	public int HandPriority { get; set; }
+	
 	public Vector2 HandPos { get; set; }
 	
 	private CardManager? _cardManager;
