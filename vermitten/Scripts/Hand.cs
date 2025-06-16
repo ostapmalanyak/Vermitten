@@ -10,9 +10,10 @@ public partial class Hand : Node2D
 	
 	[Export]
 	private int _handCount = 5;
-	
-	private const float HandYPos = 300;
-	private const int CardWidth = 150;
+	[Export]
+	private float _handYPos = 300;
+	[Export]
+	private int _cardWidth = 150;
 	
 	public List<Card> HandCards { get; } = new List<Card>();
 	
@@ -63,7 +64,7 @@ public partial class Hand : Node2D
 	private void UpdateHandPosition() {
 		NormalizePriorities();
 		for (int i = 0; i < HandCards.Count; i++) {
-			var newPos = new Vector2(CalculatePos(i), HandYPos);
+			var newPos = new Vector2(CalculatePos(i), _handYPos);
 			HandCards[i].HandPos = newPos;
 			AnimateCardToPos(HandCards[i], newPos, GetTree());
 		}
@@ -75,8 +76,8 @@ public partial class Hand : Node2D
 	}
 
 	private float CalculatePos(int index) {
-		float xOffset = (HandCards.Count - 1) * CardWidth;
-		var xPosition = _centerScreen + index * CardWidth - xOffset/2f;
+		float xOffset = (HandCards.Count - 1) * _cardWidth;
+		var xPosition = _centerScreen + index * _cardWidth - xOffset/2f;
 
 		return xPosition;
 	}

@@ -1,9 +1,10 @@
-[gd_scene load_steps=6 format=3 uid="uid://c38fy5he8pdl6"]
+[gd_scene load_steps=7 format=3 uid="uid://c38fy5he8pdl6"]
 
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
 [ext_resource type="Script" path="res://Scripts/Hand.cs" id="3_curdn"]
 [ext_resource type="Material" uid="uid://0ivmrosr7opl" path="res://Assets/Materials/TempMaterial.tres" id="3_nl6fw"]
 [ext_resource type="PackedScene" uid="uid://qm13yhk25vfk" path="res://Assets/3dModels/Mitten.glb" id="4_7xguy"]
+[ext_resource type="PackedScene" uid="uid://bjjxpfb2hyvrg" path="res://Prefabs/unit.tscn" id="5_x0hkx"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gs0qv"]
 
@@ -33,6 +34,8 @@ script = ExtResource("1_itx87")
 [node name="Hand" type="Node2D" parent="CanvasLayer"]
 script = ExtResource("3_curdn")
 _handCount = 3
+_handYPos = 500.0
+_cardWidth = 190
 
 [node name="Gauntlet" type="Node3D" parent="."]
 
@@ -43,3 +46,5 @@ transform = Transform3D(-8.74228e-08, 0, 2, 0, 2, 0, -2, 0, -8.74228e-08, -100, 
 
 [node name="GauntletModel" parent="Gauntlet2" instance=ExtResource("4_7xguy")]
 transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, 100, 0, 0)
+
+[node name="Unit" parent="." instance=ExtResource("5_x0hkx")]
