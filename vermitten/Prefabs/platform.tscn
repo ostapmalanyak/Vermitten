@@ -1,0 +1,23 @@
+[gd_scene load_steps=4 format=3 uid="uid://76ek5rrc0jlo"]
+
+[ext_resource type="Script" path="res://Scripts/Platform.cs" id="1_0i6r0"]
+[ext_resource type="Texture2D" uid="uid://dlijinfpvk11b" path="res://Assets/UnitArt/Unit.png" id="2_3c67v"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_mvwqw"]
+size = Vector3(12, 0.246582, 12)
+
+[node name="Platform" type="Node3D"]
+script = ExtResource("1_0i6r0")
+
+[node name="PhantomUnit" type="Sprite3D" parent="."]
+transform = Transform3D(20.08, 0, 0, 0, 20.08, 0, 0, 0, 20.08, 0, 6.5, 0)
+visible = false
+texture = ExtResource("2_3c67v")
+
+[node name="PlatformArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PlatformArea"]
+shape = SubResource("BoxShape3D_mvwqw")
+
+[connection signal="mouse_entered" from="PlatformArea" to="." method="Hover"]
+[connection signal="mouse_exited" from="PlatformArea" to="." method="UnHover"]

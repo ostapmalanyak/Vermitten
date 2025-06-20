@@ -17,6 +17,8 @@ public partial class Card : Node2D
 	public bool MouseHovering { get; private set; } // Only card should change when it's getting hovered over
 	
 	public Area2D CardArea { get; private set; } = null!; // cannot be null
+
+	public Sprite2D CardSprite { get; private set; } = null!;
 	
 	public int HandPriority { get; set; }
 	
@@ -24,9 +26,13 @@ public partial class Card : Node2D
 	
 	private CardManager? _cardManager;
 	
+	public const string UnitPrefabPath = "res://Prefabs/unit.tscn";
+
 	public override void _Ready() {
-		CardArea = GetNode<Area2D>("CardArea") ?? throw new FileNotFoundException("No card area in card") 
+		CardArea = GetNode<Area2D>("CardArea") 
 			?? throw new FileNotFoundException($"No card area in card {this}");
+		CardSprite = GetNode<Sprite2D>("Sprite") 
+		           ?? throw new FileNotFoundException($"No sprite in card {this}");
 		
 		_cardManager = GetParent<CardManager>()
 		                           ?? throw new InvalidCastException("Parent is not a card manager");

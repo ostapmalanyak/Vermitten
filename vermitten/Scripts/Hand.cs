@@ -1,3 +1,4 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -5,7 +6,7 @@ using Godot;
 
 namespace Vermitten.Scripts;
 
-public partial class Hand : Node2D
+public partial class Hand : Node3D
 {
 	
 	[Export]
@@ -52,7 +53,10 @@ public partial class Hand : Node2D
 
 	public void AddCardToHand(Card card) {
 		HandCards.Add(card);
-		HandCards.Sort((card1, card2) => card1.HandPriority>=card2.HandPriority ? 1 : 0);
+		
+		HandCards.Sort((card1, card2) => card1.HandPriority>=card2.HandPriority ? 1 : -1);
+		
+		NormalizePriorities();
 		UpdateHandPosition();
 	}
 
@@ -62,7 +66,6 @@ public partial class Hand : Node2D
 	}
 
 	private void UpdateHandPosition() {
-		NormalizePriorities();
 		for (int i = 0; i < HandCards.Count; i++) {
 			var newPos = new Vector2(CalculatePos(i), _handYPos);
 			HandCards[i].HandPos = newPos;
@@ -81,7 +84,7 @@ public partial class Hand : Node2D
 
 		return xPosition;
 	}
-
+	
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{

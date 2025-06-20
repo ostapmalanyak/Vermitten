@@ -1,0 +1,36 @@
+[gd_scene load_steps=3 format=3 uid="uid://ca1nl4ugb7svo"]
+
+[ext_resource type="PackedScene" uid="uid://qm13yhk25vfk" path="res://Assets/3dModels/Mitten.glb" id="1_dld71"]
+[ext_resource type="PackedScene" uid="uid://76ek5rrc0jlo" path="res://Prefabs/platform.tscn" id="2_d5xj7"]
+
+[node name="Gauntlet" type="Node3D"]
+
+[node name="GauntletModel" parent="." instance=ExtResource("1_dld71")]
+transform = Transform3D(-8.74228e-08, 0, 2, 0, 2, 0, -2, 0, -8.74228e-08, -80, 0, 0)
+
+[node name="Platform33" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 30.5, 14)
+
+[node name="Platform32" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 30.5, 14)
+
+[node name="Platform31" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 30.5, 14)
+
+[node name="Platform23" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 30.5, 0)
+
+[node name="Platform22" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 30.5, 0)
+
+[node name="Platform21" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 30.5, 0)
+
+[node name="Platform13" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36, 30.5, -14)
+
+[node name="Platform12" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, 30.5, -14)
+
+[node name="Platform11" parent="." instance=ExtResource("2_d5xj7")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -64, 30.5, -14)

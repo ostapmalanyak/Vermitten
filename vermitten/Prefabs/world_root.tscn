@@ -1,19 +1,22 @@
-[gd_scene load_steps=7 format=3 uid="uid://c38fy5he8pdl6"]
+[gd_scene load_steps=9 format=3 uid="uid://c38fy5he8pdl6"]
 
 [ext_resource type="Script" path="res://Scripts/CardManager.cs" id="1_itx87"]
+[ext_resource type="Script" path="res://Scripts/UnitManager.cs" id="1_rr5ar"]
+[ext_resource type="Material" uid="uid://h0olnicu0hjk" path="res://Assets/Materials/TempMaterial2.tres" id="2_jy4o4"]
 [ext_resource type="Script" path="res://Scripts/Hand.cs" id="3_curdn"]
 [ext_resource type="Material" uid="uid://0ivmrosr7opl" path="res://Assets/Materials/TempMaterial.tres" id="3_nl6fw"]
-[ext_resource type="PackedScene" uid="uid://qm13yhk25vfk" path="res://Assets/3dModels/Mitten.glb" id="4_7xguy"]
+[ext_resource type="PackedScene" uid="uid://ca1nl4ugb7svo" path="res://Prefabs/gauntlet.tscn" id="4_pawre"]
 [ext_resource type="PackedScene" uid="uid://bjjxpfb2hyvrg" path="res://Prefabs/unit.tscn" id="5_x0hkx"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_gs0qv"]
 
 [node name="WorldRoot" type="Node3D"]
 
-[node name="CardManager" type="Node3D" parent="."]
+[node name="UnitManager" type="Node3D" parent="."]
+script = ExtResource("1_rr5ar")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.233191, 0.972431, 0, -0.972431, 0.233191, 0, 100, 30.9151)
+transform = Transform3D(1, 0, 0, 0, 0.79197, 0.61056, 0, -0.61056, 0.79197, 0, 80.1936, 67.1792)
 current = true
 
 [node name="Ground" type="Node3D" parent="."]
@@ -23,28 +26,27 @@ transform = Transform3D(1000, 0, 0, 0, 1, 0, 0, 0, 1000, 0, -7.38241, 0)
 material_override = ExtResource("3_nl6fw")
 mesh = SubResource("BoxMesh_gs0qv")
 
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Ground"]
+transform = Transform3D(3662, 0, 0, 0, 0.821129, -1655.67, 0, 0.570742, 2382.01, 0, -97.5355, -1312.49)
+material_override = ExtResource("2_jy4o4")
+mesh = SubResource("BoxMesh_gs0qv")
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.725002, 0.688747, 0, -0.688747, 0.725002, 0, 0, 0)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CardInterface" type="CanvasLayer" parent="."]
 
-[node name="CardManager" type="Node2D" parent="CanvasLayer"]
+[node name="CardManager" type="Node2D" parent="CardInterface"]
 script = ExtResource("1_itx87")
 
-[node name="Hand" type="Node2D" parent="CanvasLayer"]
+[node name="Hand" type="Node3D" parent="CardInterface"]
 script = ExtResource("3_curdn")
-_handCount = 3
-_handYPos = 500.0
-_cardWidth = 190
+_handYPos = 550.0
 
-[node name="Gauntlet" type="Node3D" parent="."]
+[node name="Gauntlet" parent="." instance=ExtResource("4_pawre")]
 
-[node name="GauntletModel" parent="Gauntlet" instance=ExtResource("4_7xguy")]
-transform = Transform3D(-8.74228e-08, 0, 2, 0, 2, 0, -2, 0, -8.74228e-08, -100, 0, 0)
+[node name="Unit" parent="Gauntlet" instance=ExtResource("5_x0hkx")]
+transform = Transform3D(0.8, 0, 0, 0, 0.8, 0, 0, 0, 0.8, -50, 37, 0)
 
-[node name="Gauntlet2" type="Node3D" parent="."]
-
-[node name="GauntletModel" parent="Gauntlet2" instance=ExtResource("4_7xguy")]
-transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, 100, 0, 0)
-
-[node name="Unit" parent="." instance=ExtResource("5_x0hkx")]
+[node name="Gauntlet2" parent="." instance=ExtResource("4_pawre")]
+transform = Transform3D(-1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0)

@@ -9,30 +9,41 @@ namespace Vermitten.Scripts;
 public partial class CardManager : Node2D
 {
 	private const string LeftClickPress = "LeftClick";
-	//private const int CardCollisionMask = 5; //unused for now
-	private Card? _cardDragged;
 	private Card? _cardHovering;
 	private Vector2 _screenSize;
 	private readonly List<Card> _hoverQueue = new List<Card>();
 	private Hand _hand = null!;
+	private UnitManager _unitManager = null!;
+
+	private const float DecreaseSizeStart = 500;
+	private const float DecreaseSizeStop = 390;
 	
 	[Export]
-	private Vector2 _normalCardSize = new Vector2(0.25f, 0.25f);
+	public Vector2 NormalCardSize { get; private set; } = new Vector2(0.25f, 0.25f);
+	
+	public Card? CardDragged { get; private set; }
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready() {
 		_screenSize = GetViewport().GetVisibleRect().Size;
 		_hand = GetNode<Hand>(new NodePath("../Hand")) ??
 		                      throw new FileNotFoundException("Invalid hand path");
+		_unitManager = GetNode<UnitManager>(new NodePath("../../UnitManager")) ??
+		        throw new FileNotFoundException("Invalid unit manager path");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)	
 	{
-		if (_cardDragged is not null) {
-			_cardDragged.Position = new Vector2(
+		if (CardDragged is not null) {
+			CardDragged.Position = new Vector2(
 				Math.Clamp(GetGlobalMousePosition().X, 0, _screenSize.X),
 				Math.Clamp(GetGlobalMousePosition().Y, 0, _screenSize.Y));
+
+			CardDragged.Scale = NormalCardSize *
+			                     (float)Math.Pow((Math.Clamp(GetGlobalMousePosition().Y,
+				                                      DecreaseSizeStop,
+				                                      DecreaseSizeStart) / DecreaseSizeStart), 8);
 		}
 	}
 
@@ -54,23 +65,35 @@ public partial class CardManager : Node2D
 	}
 
 	private void StartDrag(Card card) {
-		_cardDragged = card;
+		CardDragged = card;
 		_hand.RemoveCardFromHand(card);
 		HighlightCard(card, false, false);
 	}
 	
 	private void EndDrag() {
-		if (_cardDragged is null) {
+		if (CardDragged is null) {
 			return;
 		}
 
-		if (!_hand.HandCards.Contains(_cardDragged)) {
-			_hand.AddCardToHand(_cardDragged);
-		}
+		Platform? letGoOn = _unitManager.CardLetGo();
+		GD.Print(letGoOn);
 		
-		Hand.AnimateCardToPos(_cardDragged, _cardDragged.HandPos, GetTree());
-		HighlightCard(_cardDragged, true);
-		_cardDragged = null;
+		if (letGoOn is null) {
+			if (!_hand.HandCards.Contains(CardDragged)) {
+				_hand.AddCardToHand(CardDragged);
+			}
+		
+			Hand.AnimateCardToPos(CardDragged, CardDragged.HandPos, GetTree());
+			HighlightCard(CardDragged, true);
+			CardDragged = null;
+		}
+		else {
+			_unitManager.CreateUnit(CardDragged, letGoOn);
+			
+			//CardDragged.QueueFree(); TODO Implement Free later
+			CardDragged.Visible = false;
+			CardDragged = null;
+		}
 	}
 
 	private Card? MouseHovering() {
@@ -100,7 +123,7 @@ public partial class CardManager : Node2D
 	public void ConnectCard(Card card) {
 		Area2D cardArea = card.CardArea;
 
-		card.Scale = _normalCardSize;
+		card.Scale = NormalCardSize;
 		
 		cardArea.MouseEntered += () => Hover(card);
 		cardArea.MouseExited += () => UnHover(card);
@@ -109,7 +132,7 @@ public partial class CardManager : Node2D
 	private void Hover(Card card) {
 		_hoverQueue.Add(card); // add it to the hover queue
 		
-		if(_cardDragged!=_hoverQueue[0]) {
+		if(CardDragged!=_hoverQueue[0]) {
 			HighlightCard(_hoverQueue[0], true); // highlight the top card
 		}
 	}
@@ -118,18 +141,18 @@ public partial class CardManager : Node2D
 		HighlightCard(card, false); // unhighlight the card from whose area mouse exited
 		_hoverQueue.Remove(card); // remove from queue
 		
-		if(_hoverQueue.Count!=0 && _cardDragged!=_hoverQueue[0]) {
+		if(_hoverQueue.Count!=0 && CardDragged!=_hoverQueue[0]) {
 			HighlightCard(_hoverQueue[0], true); // hover the new top card
 		}
 	}
 
 	private void HighlightCard(Card card, bool hovered, bool zChange = true) {
 		if (hovered) {
-			card.Scale = _normalCardSize*1.05f;
+			card.Scale = NormalCardSize*1.05f;
 			if(zChange) card.ZIndex = 2;
 		}
 		else {
-			card.Scale = _normalCardSize;
+			card.Scale = NormalCardSize;
 			if(zChange) card.ZIndex = 1;
 		}
 	}
